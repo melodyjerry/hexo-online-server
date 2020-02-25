@@ -23,7 +23,7 @@ router.get('/', function (req, res, next) {
                 hexoServer();
                 break;
             case "close_server":
-                if (server.kill("SIGSTOP")){
+                if (server.kill("SIGTERM")){
                     ws.send(JSON.stringify({ type: "message", data:"Server has been closed"}));
                 }else{
                     ws.send(JSON.stringify({ type: "message", data: "Server has been not closed" }));
