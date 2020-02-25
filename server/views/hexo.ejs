@@ -1,0 +1,23 @@
+<div class="btn-toolbar" role="toolbar">
+    <div class="btn-group">
+        <a href="/shell?action=pull" wss type="button" class="btn btn-default">从git同步</a>
+        <a href="/shell?action=push" wss type="button" class="btn btn-default">同步到git</a>
+    </div>
+    <div class="btn-group">
+        <a href="/shell?action=clean" wss type="button" class="btn btn-default">Hexo clean</a>
+        <a href="/shell?action=server" wss type="button" class="btn btn-default">Hexo server</a>
+        <a href="/shell?action=close_server" wss type="button" class="btn btn-default">Close server</a>
+        <a href="/shell?action=deploy" wss type="button" class="btn btn-default">Hexo deploy</a>
+    </div>
+    <div class="btn-group">
+        <a href="/shell?action=check_flink" wss type="button" class="btn btn-default">友链检测</a>
+    </div>
+</div>
+
+<textarea class="output" style="position: fixed;"></textarea>
+<script>
+    $("a[wss]").bind("click", function (e) {
+        $.get($(this).attr("href"));
+        return false;
+    });
+</script>

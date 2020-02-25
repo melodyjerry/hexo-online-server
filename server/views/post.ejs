@@ -1,0 +1,63 @@
+<link rel="stylesheet" href="/css/editormd.min.css" />
+<script src="/editormd.min.js"></script>
+<div style="width: 25%;position: fixed;top: 65px;bottom: 0;overflow-x: hidden;overflow-y: scroll;">
+    <% posts.forEach(function(post){ %>
+    <a href="#<%= post %>" class="list-group-item" post><%= post %></a>
+    <% }); %>
+</div>
+<div class="btn-group" style="position: fixed;top: 65px;margin-left: 25%;width: 75%;">
+    <a name="new" href="/shell?action=new_post" wss type="button" class="btn btn-default">新建文章</a>
+    <a name="save" href="/shell?action=save_post" wss type="button" class="btn btn-default" post-id="#">保存当前文章</a>
+    <a name="delete" href="/shell?action=delete_post" wss type="button" class="btn btn-default" post-id="#">删除当前文章</a>
+</div>
+<div id="editor" style="position: fixed;top: 100px;margin-left: 25%;width: 75%;height: 84%;">
+</div>
+<script>
+    $(".list-group-item").bind("click", function () {
+        $(".list-group-item").removeClass("active");
+        $(this).addClass("active");
+    });
+    $("a[post]").bind("click", function () {
+        let postId = $(this).attr("href");
+        $.get('/getPost', {
+            post: postId
+        }, function (data, status, xhr) {
+            if (status === "success" && data.success) {
+                var editor = editormd("editor", {
+                    width: "75%",
+                    height: "84%",
+                    markdown: data.data, // dynamic set Markdown text
+                    path: "/lib/" // Autoload modules mode, codemirror, marked... dependents libs path
+                });
+                $('a[post-id]').attr("post-id", postId);
+            } else {
+                swal("\n获取文章失败");
+            }
+        });
+    });
+    $("a[wss]").bind("click", function () {
+        switch ($(this).attr("name")) {
+            case "new":
+                var post = prompt("请输入文章标题：");
+                if (post) $.get($(this).attr("href"), {
+                    post
+                });
+                break;
+            case "delete":
+                $.get($(this).attr("href"), {
+                    post: $(this).attr("post-id")
+                });
+                break;
+            case "save":
+                $.get($(this).attr("href"), {
+                    post: $(this).attr("post-id"),
+                    data: $(".editormd-markdown-textarea").val()
+                });
+                break;
+            default:
+                swal("未知操作", true);
+                break;
+        }
+        return false;
+    });
+</script>
