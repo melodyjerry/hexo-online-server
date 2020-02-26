@@ -15,9 +15,9 @@ router.get('/', function (req, res, next) {
             } 
             pages=getPages(files);
             if (req.query.pjax) {
-                res.render('page', { pages});
+                res.render('page', { pages, autoSave: olConfig.autoSave});
             } else {
-                res.render('index', { wsPort: olConfig.wsPort, path: "page", pages });
+                res.render('index', { wsPort: olConfig.wsPort, path: "page", pages, autoSave: olConfig.autoSave });
             }
         });
     } else {

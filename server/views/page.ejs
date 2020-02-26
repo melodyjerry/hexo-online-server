@@ -30,6 +30,16 @@
                     path: "/lib/" // Autoload modules mode, codemirror, marked... dependents libs path
                 });
                 $('a[page-id]').attr("page-id", pageId);
+                let autoSaveTime = <%= autoSave %>;
+                if (autoSaveTime) {
+                    if(autoSave) clearInterval(autoSave);
+                    window.autoSave = setInterval(() => {
+                        $.get($(this).attr("href"), {
+                        page: $(this).attr("page-id"),
+                        data: $(".editormd-markdown-textarea").val()
+                        });
+                    }, autoSaveTime);
+                }
             } else {
                 swal("\n获取页面失败");
             }
@@ -39,9 +49,7 @@
         switch ($(this).attr("name")) {
             case "new":
                 var page = prompt("请输入页面路径：");
-                if(page) $.get($(this).attr("href"),{page},function(){
-                    //
-                });
+                if(page) $.get($(this).attr("href"),{page});
                 break;
             case "delete":
                 $.get($(this).attr("href"), {

@@ -30,6 +30,16 @@
                     path: "/lib/" // Autoload modules mode, codemirror, marked... dependents libs path
                 });
                 $('a[post-id]').attr("post-id", postId);
+                let autoSaveTime = <%= autoSave %>;
+                if (autoSaveTime) {
+                    if(autoSave) clearInterval(autoSave);
+                    window.autoSave = setInterval(() => {
+                        $.get($(this).attr("href"), {
+                            post: $(this).attr("post-id"),
+                            data: $(".editormd-markdown-textarea").val()
+                        });
+                    }, autoSaveTime);
+                }
             } else {
                 swal("\n获取文章失败");
             }

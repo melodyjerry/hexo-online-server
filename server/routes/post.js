@@ -16,9 +16,9 @@ router.get('/', function (req, res, next) {
                 return e.replace(/\.md$/,'');
             });
             if (req.query.pjax) {
-                res.render('post', { posts: posts});
+                res.render('post', { posts,autoSave:olConfig.autoSave});
             } else {
-                res.render('index', { wsPort: olConfig.wsPort, path: "post", posts: posts });
+                res.render('index', { wsPort: olConfig.wsPort, path: "post", posts, autoSave: olConfig.autoSave });
             }
         });
     } else {
