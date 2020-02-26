@@ -94,8 +94,10 @@
       var data = JSON.parse(ev.data);
       if (data.type === 'message') {
         swal("\n" + data.data);
-      } else if (data.type === 'js') {
-        eval(data.data);
+      } else if (data.type === 'warning') {
+        swal("\n" + data.data,true);
+      } else if (data.type === 'reload') {
+        window.location.reload();
       } else if (data.type === 'error') {
         swal("\n执行出错，详情请查看控制台");
         console.log(data.data);
@@ -111,6 +113,7 @@
       console.log(ev);
     };
     $("a[pjax]").bind("click", function (e) {
+      if(window.autoSave) clearInterval(window.autoSave);
       $("ul.nav li").removeClass("active");
       $(this).parent().addClass('active');
       let path = $(this).attr("href");

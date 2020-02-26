@@ -1,15 +1,14 @@
 global.hexo = hexo;
-global.olConfig = require("./getConfig");
+global.olConfig = require("./lib/getConfig");
 var WebSocket = require('ws');
 var app = require('./server/app');
 var http = require('http');
 var bcrypt = require('bcryptjs');
 
 hexo.extend.console.register('bcrypt', 'Bcrypt your password', function (args) {
-    //var salt = bcrypt.genSaltSync(10);
-    //var hash = bcrypt.hashSync(args._[0], salt);
-    //console.log(hash);
-    console.log(hexo.source_dir);
+    var salt = bcrypt.genSaltSync(10);
+    var hash = bcrypt.hashSync(args._[0], salt);
+    console.log("passwordHash:"+hash);
 });
 
 hexo.extend.console.register('online', 'Start online server', function (args) {
@@ -27,7 +26,10 @@ hexo.extend.console.register('online', 'Start online server', function (args) {
 
     var wss = new WebSocket.Server({ port: olConfig.wsPort });
     wss.on('connection', function connection(ws) {
-        global.ws = ws;
+        function send(data, type = "message") {
+            ws.send(JSON.stringify({ type, data }));
+        }
+        global.send = send;
     });
 
     //Normalize a port into a number, string, or false.

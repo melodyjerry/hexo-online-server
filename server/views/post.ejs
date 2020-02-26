@@ -32,10 +32,10 @@
                 $('a[post-id]').attr("post-id", postId);
                 let autoSaveTime = <%= autoSave %>;
                 if (autoSaveTime) {
-                    if(autoSave) clearInterval(autoSave);
+                    if(window.autoSave) clearInterval(window.autoSave);
                     window.autoSave = setInterval(() => {
-                        $.get($(this).attr("href"), {
-                            post: $(this).attr("post-id"),
+                        $.post($('a[name="save"]').attr("href"), {
+                            post: $('a[name="save"]').attr("post-id"),
                             data: $(".editormd-markdown-textarea").val()
                         });
                     }, autoSaveTime);
@@ -59,7 +59,7 @@
                 });
                 break;
             case "save":
-                $.get($(this).attr("href"), {
+                $.post($(this).attr("href"), {
                     post: $(this).attr("post-id"),
                     data: $(".editormd-markdown-textarea").val()
                 });
