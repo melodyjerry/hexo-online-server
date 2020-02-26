@@ -26,7 +26,7 @@ router.get('/', function (req, res, next) {
                 closeServer();
                 break;
             case "deploy":
-                shell("hexo deploy");
+                shell({e:"hexo deploy",next:()=>{send("部署完成")}});
                 break;
             case "new_post":
                 new_post(req.query.post);

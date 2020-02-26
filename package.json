@@ -1,7 +1,7 @@
 {
   "name": "hexo-online-server",
-  "version": "1.0.8",
-  "description": "",
+  "version": "1.0.10",
+  "description": "hexo在线编辑，发布文章",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -25,7 +25,6 @@
     "express": "~4.16.1",
     "express-session": "^1.17.0",
     "http-errors": "~1.6.3",
-    "moment": "^2.24.0",
     "morgan": "~1.9.1",
     "ws": "^7.2.1"
   }
