@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
-var shell = require("../../lib/shell");
+var shell = require("../../lib/shell"); 
+var dateFormat = require("../../lib/dateFormat");
 var fs = require("fs");
 var path = require("path");
 var axios = require("axios");
@@ -76,17 +77,25 @@ router.get('/', function (req, res, next) {
     }
 });
 function gitPull() {
+    let pull=olConfig.pull;
     shell({e:"cd " + hexo.base_dir, next:() => {
-        shell("git pull");
+        cmds(pull);
     }});
 }
-function gitPush() {
-    shell({e:"cd " + hexo.base_dir,next:()=>{
-        shell({e:"git add .",next:()=>{
-            shell({e:`git commit -m "Update at ${new Date().getTime()}"`,next:()=>{
-                shell({e:"git push"});
-            }});
+function cmds(commands,i=0){
+    if (i < commands.length){
+        shell({
+            e: commands[i].replace("{time}", dateFormat('YYYY-MM-DD HH:mm:ss')),next:()=>{
+            cmds(commands,++i);
         }});
+    }else{
+        send("end");
+    }
+}
+function gitPush() {
+    let push = olConfig.push;
+    shell({e:"cd " + hexo.base_dir,next:()=>{
+        cmds(push);
     }});
 }
 function hexoServer() {
