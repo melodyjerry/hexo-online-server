@@ -1,5 +1,7 @@
 # hexo-online-server
 
+![](https://nodei.co/npm/hexo-online-server.png?downloads=true&downloadRank=true&stars=true)
+
 本插件已实现以下功能:
 
 - 在线新建，编辑，删除post和page(默认路径)
@@ -12,6 +14,7 @@
 - [Node.js](http://nodejs.org/) >= 10.0
 - [Hexo](https://hexo.io/) 4.X(只测试了4.X)
 - [Git](http://git-scm.com/)
+- mac系统`close server`功能无法使用(我没有mac设备，无法测试)
 
 ## 准备工作
 
@@ -65,6 +68,9 @@ npm install hexo-online-server
 4. 运行`hexo online`, 浏览器打开`http://localhost:4001/`
 
 [更多](https://blog.hclonely.com/posts/ebe9edfc/)
+
+## 示例
+
 
 ## LICENSE
 

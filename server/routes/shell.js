@@ -6,6 +6,7 @@ var fs = require("fs");
 var path = require("path");
 var axios = require("axios");
 var url = require("url");
+var os = require('os');
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
@@ -104,18 +105,34 @@ function hexoServer() {
     }});
 }
 function closeServer() {
-    shell({
-        e: `netstat -ano | findstr ${hexo.config.server.port || 4000}`, stdout:data=>{
-        let reg = new RegExp(`^[\\s]*TCP[\\s]*?0.0.0.0:${hexo.config.server.port || 4000}.*?LISTENING[\\s]*?([\\d]+)`,'i');
-        let results = data.split("\n");
-        for (let i = 0; i < results.length;i++){
-            let res = results[i]?results[i].match(reg):null;
-            if (res&&res[1]){ 
-                shell({ e: `taskkill /f /pid ${res[1]}`, sendLog: false});
-                break;
+    let reg = new RegExp(`^.*TCP.*?:${hexo.config.server.port || 4000}.*?LISTEN.*?([\\d]+)`, 'i');
+    if (/windows/gim.test(os.type())){
+        shell({
+            e: `netstat -ano | findstr ${hexo.config.server.port || 4000}`, stdout: data => {
+                let results = data.split("\n");
+                for (let i = 0; i < results.length; i++) {
+                    let res = results[i] ? results[i].match(reg) : null;
+                    if (res && res[1]) {
+                        shell({ e: `taskkill /f /pid ${res[1]}`, sendLog: false });
+                        break;
+                    }
+                }
             }
-        }
-    }});
+        });
+    } else if (/linux/gim.test(os.type())){
+        shell({
+            e: `netstat -tunlp | grep ${hexo.config.server.port || 4000}`, stdout: data => {
+                let results = data.split("\n");
+                for (let i = 0; i < results.length; i++) {
+                    let res = results[i] ? results[i].match(reg) : null;
+                    if (res && res[1]) {
+                        shell({ e: `kill ${res[1]}`, sendLog: false });
+                        break;
+                    }
+                }
+            }
+        });
+    }
 }
 function new_post(e){
     shell({e:"hexo new "+e,next:()=>{
