@@ -93,7 +93,7 @@ function cmds(commands, i = 0) {
             }
         });
     } else {
-        send("end");
+        send("-----End-----");
     }
 }
 function gitPush() {
