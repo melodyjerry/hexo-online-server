@@ -4,7 +4,7 @@ var router = express.Router();
 /* GET home page. */
 router.get('/', function (req, res, next) {
     req.session.destroy(function (err) {
-        if(err){
+        if (err) {
             req.session.user = "default";
             req.session.login = false;
         }

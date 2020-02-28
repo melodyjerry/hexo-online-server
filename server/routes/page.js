@@ -6,16 +6,16 @@ var path = require("path");
 /* GET home page. */
 router.get('/', function (req, res, next) {
     if (req.session.user === olConfig.user && req.session.isLogin) {
-        fs.readdir(hexo.source_dir, function (err, files){
-            let pages=[];
-            if(err){
-                res.render('page', {pages});
+        fs.readdir(hexo.source_dir, function (err, files) {
+            let pages = [];
+            if (err) {
+                res.render('page', { pages });
                 console.error(err);
                 return;
-            } 
-            pages=getPages(files);
+            }
+            pages = getPages(files);
             if (req.query.pjax) {
-                res.render('page', { pages, autoSave: olConfig.autoSave});
+                res.render('page', { pages, autoSave: olConfig.autoSave });
             } else {
                 res.render('index', { wsPort: olConfig.wsPort, path: "page", pages, autoSave: olConfig.autoSave });
             }
@@ -24,7 +24,7 @@ router.get('/', function (req, res, next) {
         res.render('login', { script: '' });
     }
 });
-function getPages(files,pages=[]){
+function getPages(files, pages = []) {
     files.map((e, i) => {
         if (/^_/.test(e)) return e;
         let stats = fs.statSync(path.join(hexo.source_dir, e));

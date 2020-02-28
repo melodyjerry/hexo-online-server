@@ -8,18 +8,15 @@ var bcrypt = require('bcryptjs');
 hexo.extend.console.register('bcrypt', 'Bcrypt your password', function (args) {
     var salt = bcrypt.genSaltSync(10);
     var hash = bcrypt.hashSync(args._[0], salt);
-    console.log("passwordHash:"+hash);
+    console.log("passwordHash:" + hash);
 });
 
 hexo.extend.console.register('online', 'Start online server', function (args) {
-    //Get port from config in Express.
     var port = normalizePort(olConfig.port || '3000');
     app.set('port', port);
 
-    //Create HTTP server.
     var server = http.createServer(app);
 
-    //Listen on provided port, on all network interfaces.
     server.listen(port);
     server.on('error', onError);
     server.on('listening', onListening);
@@ -32,21 +29,17 @@ hexo.extend.console.register('online', 'Start online server', function (args) {
         global.send = send;
     });
 
-    //Normalize a port into a number, string, or false.
     function normalizePort(val) {
         var port = parseInt(val, 10);
         if (isNaN(port)) {
-            // named pipe
             return val;
         }
         if (port >= 0) {
-            // port number
             return port;
         }
         return false;
     }
 
-    //Event listener for HTTP server "error" event.
     function onError(error) {
         if (error.syscall !== 'listen') {
             throw error;
@@ -56,7 +49,6 @@ hexo.extend.console.register('online', 'Start online server', function (args) {
             ? 'Pipe ' + port
             : 'Port ' + port;
 
-        // handle specific listen errors with friendly messages
         switch (error.code) {
             case 'EACCES':
                 console.error(bind + ' requires elevated privileges');
@@ -71,7 +63,6 @@ hexo.extend.console.register('online', 'Start online server', function (args) {
         }
     }
 
-    //Event listener for HTTP server "listening" event.
     function onListening() {
         var addr = server.address();
         var bind = typeof addr === 'string'

@@ -1,6 +1,6 @@
 {
   "name": "hexo-online-server",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "hexo在线编辑，发布文章",
   "main": "index.js",
   "scripts": {

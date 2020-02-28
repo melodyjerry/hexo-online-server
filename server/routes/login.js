@@ -12,7 +12,7 @@ router.post('/', function (req, res, next) {
         req.session.isLogin = true;
         res.redirect(olConfig.indexPath);
     } else {
-        res.render('login', { script: '$(\"#errAlert\").show()'});
+        res.render('login', { script: '$(\"#errAlert\").show()' });
     }
 });
 module.exports = router;
