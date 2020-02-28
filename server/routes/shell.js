@@ -107,7 +107,7 @@ function gitPush() {
 function hexoServer() {
     shell({
         e: "hexo generate", next: () => {
-            shell({ e: "hexo server", next: () => { send("Hexo server 已启动") } });
+            shell({ e: "hexo server" });
         }
     });
 }
