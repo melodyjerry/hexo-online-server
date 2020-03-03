@@ -6,7 +6,6 @@
 
 - 在线新建，编辑，删除post和page(默认路径)
 - `hexo clean`,`hexo server`,`hexo deploy`
-- 友链检测
 - 源码同步
 
 ## 需求
@@ -46,7 +45,6 @@ npm install hexo-online-server
         "user":"",//登录用户名
         "passwordHash": "",//密码加密后的字符串
         "autoSave": 300000,//编辑文章时自动保存时间, 单位:ms, 0为不自动保存
-        "flink":[],//对方的友链页面链接, 用于检测友链是否正常
         "noticeUrl":"",//当有用户登录时向`此链接+message`发送get请求，留空则不通知
         "pull":["git pull"],//同步到git命令
         "push":["git add --all .","git commit -m 'update'","git push"]//从到git同步命令
