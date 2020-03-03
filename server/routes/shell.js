@@ -28,7 +28,7 @@ router.get('/', function (req, res, next) {
                 closeServer();
                 break;
             case "deploy":
-                shell({ e: "hexo deploy", next: () => { send("部署完成") } });
+                shell({ e: "hexo deploy", next: () => { send("部署完成","success") } });
                 break;
             case "new_post":
                 new_post(req.query.post);
@@ -48,11 +48,8 @@ router.get('/', function (req, res, next) {
             case "save_page":
                 save_page(req.query.page, req.query.data);
                 break;
-            case "check_flink":
-                check_flink();
-                break;
             default:
-                send("Undefined command");
+                send("Undefined command","error");
                 break;
         }
         res.status(200).end();
@@ -69,7 +66,7 @@ router.get('/', function (req, res, next) {
                 save_page(req.body.page, req.body.data);
                 break;
             default:
-                send("Undefined command");
+                send("Undefined command","error");
                 break;
         }
         res.status(200).end();
@@ -147,7 +144,7 @@ function new_post(e) {
             let checkExists = setInterval(() => {
                 if (fs.existsSync(path.join(hexo.source_dir, '_posts/', e + ".md"))) {
                     clearInterval(checkExists);
-                    send("新建《" + e + "》文章成功");
+                    send("新建《" + e + "》文章成功","success");
                     send("", "reload");
                 }
             }, 1000);
@@ -158,10 +155,10 @@ function delete_post(e) {
     let postName = e.replace("#", "").replace("%23", "");
     fs.unlink(path.join(hexo.source_dir, '_posts/', postName + ".md"), function (err) {
         if (err) {
-            send("删除文章《" + postName + "》失败", "warning");
+            send("删除文章《" + postName + "》失败", "error");
             return console.error(err);
         }
-        send("删除《" + postName + "》文章成功");
+        send("删除《" + postName + "》文章成功","success");
         send("", "reload");
     });
 }
@@ -169,10 +166,10 @@ function save_post(id, data) {
     let postName = id.replace("#", "").replace("%23", "");
     fs.writeFile(path.join(hexo.source_dir, '_posts/', postName + ".md"), data, function (err) {
         if (err) {
-            send("保存文章《" + postName + "》失败", "warning");
+            send("保存文章《" + postName + "》失败", "error");
             return console.error(err);
         }
-        send("保存《" + postName + "》文章成功");
+        send("保存《" + postName + "》文章成功","success");
     });
 }
 function new_page(e) {
@@ -181,7 +178,7 @@ function new_page(e) {
             let checkExists = setInterval(() => {
                 if (fs.existsSync(path.join(hexo.source_dir, e, "index.md"))) {
                     clearInterval(checkExists);
-                    send("新建\"" + e + "\"页面成功");
+                    send("新建\"" + e + "\"页面成功","success");
                     send("", "reload");
                 }
             }, 1000);
@@ -192,20 +189,20 @@ function delete_page(e) {
     let page = e.replace("#", "").replace("%23", "");
     let files = fs.readdirSync(path.join(hexo.source_dir, page));
     if (files.length > 1) {
-        send("\"" + page + "\"文件夹内有其他文件，请手动删除", "warning");
+        send("\"" + page + "\"文件夹内有其他文件，请手动删除", "error");
         return;
     }
     fs.unlink(path.join(hexo.source_dir, page, "index.md"), function (err) {
         if (err) {
-            send("删除页面\"index.md\"文件失败", "warning");
+            send("删除页面\"index.md\"文件失败", "error");
             return console.error(err);
         }
         fs.rmdir(path.join(hexo.source_dir, page), function (err) {
             if (err) {
-                send("删除页面\"" + page + "\"失败", "warning");
+                send("删除页面\"" + page + "\"失败", "error");
                 return console.error(err);
             }
-            send("删除\"" + page + "\"页面成功");
+            send("删除\"" + page + "\"页面成功","success");
             send("", "reload");
         });
     });
@@ -214,48 +211,10 @@ function save_page(id, data) {
     let page = id.replace("#", "").replace("%23", "");
     fs.writeFile(path.join(hexo.source_dir, page, "index.md"), data, function (err) {
         if (err) {
-            send("保存页面\"" + page + "\"失败", "warning");
+            send("保存页面\"" + page + "\"失败", "error");
             return console.error(err);
         }
-        send("保存\"" + page + "\"页面成功");
-    });
-}
-function check_flink() {
-    let flink = olConfig.flink;
-    if (!flink) return;
-    flink.map((e, i) => {
-        axios.get(e).then(response => {
-            if (response.status === 200) {
-                let myHost = url.parse(hexo.config.url).hostname;
-                if (!response.data.includes(myHost)) send(e + " 友链不存在");
-            } else {
-                let link = url.parse(e);
-                link.protocol = link.protocol === 'http' ? 'https' : 'http';
-                axios.get(link).then(response => {
-                    if (response.status === 200) {
-                        let myHost = url.parse(hexo.config.url).hostname;
-                        if (!response.data.includes(myHost)) send(e + " 友链不存在");
-                    } else {
-                        send(e + " 链接异常");
-                    }
-                }).catch(err => {
-                    send(e + " 链接异常");
-                });
-            }
-        }).catch(err => {
-            let link = url.parse(e);
-            link.protocol = link.protocol === 'http' ? 'https' : 'http';
-            axios.get(link).then(response => {
-                if (response.status === 200) {
-                    let myHost = url.parse(hexo.config.url).hostname;
-                    if (!response.data.includes(myHost)) send(e + " 友链不存在");
-                } else {
-                    send(e + " 链接异常");
-                }
-            }).catch(err => {
-                send(e + " 链接异常");
-            });
-        });
+        send("保存\"" + page + "\"页面成功","success");
     });
 }
 module.exports = router;

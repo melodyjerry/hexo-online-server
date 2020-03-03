@@ -30,40 +30,49 @@
                     path: "/lib/" // Autoload modules mode, codemirror, marked... dependents libs path
                 });
                 $('a[page-id]').attr("page-id", pageId);
-                let autoSaveTime = <%= autoSave %>;
+                let autoSaveTime = <%= autoSave %> ;
                 if (autoSaveTime) {
-                    if(window.autoSave) clearInterval(window.autoSave);
+                    if (window.autoSave) clearInterval(window.autoSave);
                     window.autoSave = setInterval(() => {
                         $.post($('a[name="save"]').attr("href"), {
-                        page: $('a[name="save"]').attr("page-id"),
-                        data: $(".editormd-markdown-textarea").val()
+                            page: $('a[name="save"]').attr("page-id"),
+                            data: $(".editormd-markdown-textarea").val()
                         });
                     }, autoSaveTime);
                 }
             } else {
-                swal("\n获取页面失败");
+                swal("\n获取页面失败", "error");
             }
         });
     });
     $("a[wss]").bind("click", function () {
+        let href=$(this).attr("href");
         switch ($(this).attr("name")) {
             case "new":
-                var page = prompt("请输入页面路径：");
-                if(page) $.get($(this).attr("href"),{page});
+                alertify
+                    .okBtn("确定")
+                    .cancelBtn("取消")
+                    .prompt("请输入页面路径：",
+                        function (val, ev) {
+                            ev.preventDefault();
+                            if (val) $.get(href, {
+                                page:val
+                            });
+                        });
                 break;
             case "delete":
-                $.get($(this).attr("href"), {
+                $.get(href, {
                     page: $(this).attr("page-id")
                 });
                 break;
             case "save":
-                $.post($(this).attr("href"), {
+                $.post(href, {
                     page: $(this).attr("page-id"),
                     data: $(".editormd-markdown-textarea").val()
                 });
                 break;
             default:
-                swal("未知操作", true);
+                swal("未知操作", "error");
                 break;
         }
         return false;

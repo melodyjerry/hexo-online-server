@@ -69,18 +69,6 @@
   <div id="container">
     <%- include(path); %>
   </div>
-  <div class="alert alert-warning" style="display: none;position: fixed;top:10px;right: 10px;">
-    <a href="#" class="close" data-dismiss="alert">
-      &times;
-    </a>
-    <font id="warn-message"></font>
-  </div>
-  <div class="alert alert-success" style="display: none;position: fixed;top:10px;right: 10px;">
-    <a href="#" class="close" data-dismiss="alert">
-      &times;
-    </a>
-    <font id="suc-message"></font>
-  </div>
   <script>
     if (location.pathname !== "/") {
       $("ul.nav li").removeClass("active");
@@ -95,11 +83,13 @@
       if (data.type === 'message') {
         swal("\n" + data.data);
       } else if (data.type === 'warning') {
-        swal("\n" + data.data,true);
+        swal("\n" + data.data, 'warning');
+      } else if (data.type === 'success') {
+        swal("\n" + data.data, 'success');
       } else if (data.type === 'reload') {
         window.location.reload();
       } else if (data.type === 'error') {
-        swal("\n执行出错，详情请查看控制台");
+        swal("\n执行出错，详情请查看控制台", "error");
         console.log(data.data);
       } else if (data.type === 'html') {
         $(data.el).html(data.data);
@@ -109,11 +99,11 @@
       swal("\nWebSocket连接关闭");
     };
     ws.onerror = function (ev) {
-      swal("\nWebSocket连接出错");
+      swal("\nWebSocket连接出错", "error");
       console.log(ev);
     };
     $("a[pjax]").bind("click", function (e) {
-      if(window.autoSave) clearInterval(window.autoSave);
+      if (window.autoSave) clearInterval(window.autoSave);
       $("ul.nav li").removeClass("active");
       $(this).parent().addClass('active');
       let path = $(this).attr("href");
@@ -130,29 +120,31 @@
       return false;
     });
 
-    function swal(e, warn = false) {
+    function swal(e, type = 'message') {
       if ($(".output").length > 0) {
         $(".output")[0].value += e;
         $(".output").scrollTop($(".output")[0].scrollHeight);
       } else {
-        $(".alert").hide();
-        if (warn) {
-          $("#warn-message").text(e);
-          $(".alert-warning").show();
-          setTimeout(() => {
-            $(".alert-warning").hide();
-          }, 5000);
-        } else {
-          $("#suc-message").text(e);
-          $(".alert-success").show();
-          setTimeout(() => {
-            $(".alert-success").hide();
-          }, 3000);
+        switch (type) {
+          case "success":
+            alertify.success(e);
+            break;
+          case "error":
+          case "warning":
+            alertify.error(e);
+            break;
+          case "message":
+            alertify.log(e);
+            break;
+          default:
+            alertify.log(e);
+            break;
         }
       }
     }
   </script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"></script>
+  <script src="https://cdn.rawgit.com/alertifyjs/alertify.js/v1.0.10/dist/js/alertify.js"></script>
 </body>
 
 </html>

@@ -9,7 +9,7 @@ router.get('/', function (req, res, next) {
         let dirName = req.query.page.replace('#', '').replace("%23", "");
         fs.readFile(path.join(hexo.source_dir, dirName, 'index.md'), function (err, data) {
             if (err) {
-                send("读取文件\"index.md\"失败", "warning");
+                send("读取文件\"index.md\"失败", "error");
                 res.json({ success: false, data: err });
                 console.error(err);
                 return;

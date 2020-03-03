@@ -9,7 +9,7 @@ router.get('/', function (req, res, next) {
         let fileName = req.query.post.replace('#', '').replace("%23", "") + '.md';
         fs.readFile(path.join(hexo.source_dir, '_posts/', fileName), function (err, data) {
             if (err) {
-                send("读取文件\"" + fileName + "\"失败", "warning");
+                send("读取文件\"" + fileName + "\"失败", "error");
                 res.json({ success: false, data: err });
                 console.error(err);
                 return;
