@@ -65,7 +65,7 @@ npm install hexo-online-server
 
 4. 运行`hexo online`, 浏览器打开`http://localhost:4001/`
 
-[更多](https://blog.hclonely.com/posts/ebe9edfc/)
+[更多](https://blog.hclonely.com/posts/ebe9edfc/#%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98)
 
 ## 示例
 
