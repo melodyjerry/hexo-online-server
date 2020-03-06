@@ -7,7 +7,7 @@ router.get('/', function (req, res, next) {
         if (req.query.pjax) {
             res.render('hexo');
         } else {
-            res.render('index', { wsPort: olConfig.wsPort, path: "hexo" });
+            res.render('index', { wsPort: olConfig.wsPort, path: "hexo", ssl: olConfig.ssl });
         }
     } else {
         res.render('login', { script: '' });

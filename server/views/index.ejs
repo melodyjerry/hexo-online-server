@@ -74,7 +74,7 @@
       $("ul.nav li").removeClass("active");
       $('a[href="' + location.pathname + '"]').parent().addClass('active');
     }
-    const ws = new WebSocket('ws://' + window.location.hostname + ':<%= wsPort %>');
+    const ws = new WebSocket('<%- ssl?"wss":"ws" %>://' + window.location.hostname + ':<%= wsPort %>');
     ws.onopen = function (ev) {
       swal("WebSocket已连接");
     };

@@ -47,7 +47,12 @@ npm install hexo-online-server
         "autoSave": 300000,//编辑文章时自动保存时间, 单位:ms, 0为不自动保存
         "noticeUrl":"",//当有用户登录时向`此链接+message`发送get请求，留空则不通知
         "pull":["git pull"],//同步到git命令
-        "push":["git add --all .","git commit -m 'update'","git push"]//从到git同步命令
+        "push":["git add --all .","git commit -m 'update'","git push"],//从到git同步命令
+        "ssl":false,//是否启用SSL
+        "private":{//启用ssl需配置此项
+            "key":"",//SSL证书key路径
+            "crt":""//SSL证书路径
+        }
     }
     ```
 

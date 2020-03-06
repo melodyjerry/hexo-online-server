@@ -17,7 +17,7 @@ router.get('/', function (req, res, next) {
             if (req.query.pjax) {
                 res.render('page', { pages, autoSave: olConfig.autoSave });
             } else {
-                res.render('index', { wsPort: olConfig.wsPort, path: "page", pages, autoSave: olConfig.autoSave });
+                res.render('index', { wsPort: olConfig.wsPort, path: "page", pages, autoSave: olConfig.autoSave, ssl: olConfig.ssl });
             }
         });
     } else {
