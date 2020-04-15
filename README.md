@@ -38,20 +38,20 @@ npm install hexo-online-server -S
 
     ```json
     {
-        "indexPath":"/",// 自定义主页路径, 以"/"结尾
-        "port": 4001,// http监听端口
-        "wsPort": 4002,//websocke监听端口
-        "secret":"",//用来签名session ID cookie,https://www.npmjs.com/package/express-session#secret
-        "user":"",//登录用户名
-        "passwordHash": "",//密码加密后的字符串
-        "autoSave": 300000,//编辑文章时自动保存时间, 单位:ms, 0为不自动保存
-        "noticeUrl":"",//当有用户登录时向`此链接+message`发送get请求，留空则不通知
-        "pull":["git pull"],//同步到git命令
-        "push":["git add --all .","git commit -m 'update'","git push"],//从到git同步命令
-        "ssl":false,//是否启用SSL
-        "private":{//启用ssl需配置此项
-            "key":"",//SSL证书key路径
-            "crt":""//SSL证书路径
+        "indexPath": "/", // 自定义主页路径, 以"/"结尾
+        "port": 4001, // http监听端口
+        "wsPort": 4002, // websocke监听端口
+        "secret": "", // 用来签名session ID cookie,https://www.npmjs.com/package/express-session#secret
+        "user": "", // 登录用户名
+        "passwordHash": "", // 密码加密后的字符串
+        "autoSave": 300000, // 编辑文章时自动保存时间, 单位:ms, 0为不自动保存
+        "noticeUrl": "", // 当有用户登录时向`此链接+message`发送get请求，留空则不通知
+        "pull": ["git pull"], // 同步到git命令
+        "push": ["git add --all .","git commit -m 'update'","git push"], // 从到git同步命令
+        "ssl": false, // 是否启用SSL
+        "private": { // 启用ssl需配置此项
+            "key": "", // SSL证书key路径
+            "crt": "" // SSL证书路径
         }
     }
     ```
@@ -66,7 +66,7 @@ npm install hexo-online-server -S
 3. 使用以下命令获取加密密码, 将得到的`passwordHash`添加到`config.json`文件:
 
     ```shell
-    > hexo bcrypt 你的密码
+    hexo bcrypt 你的密码
     ```
 
 4. 运行`hexo online`, 浏览器打开`http://localhost:4001/`
