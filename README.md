@@ -29,7 +29,7 @@
 ### 安装
 
 ```shell
-npm install hexo-online-server
+npm install hexo-online-server -S
 ```
 
 ### 配置
@@ -55,6 +55,7 @@ npm install hexo-online-server
         }
     }
     ```
+    ***上面的注释要删掉！***
 
 2. 把`config.json`文件保存到你的博客目录以外的地方, 在`_config.yml`中添加: 
 
