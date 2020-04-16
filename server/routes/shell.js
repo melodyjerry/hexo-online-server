@@ -21,14 +21,17 @@ router.get('/', function (req, res, next) {
             case "clean":
                 shell({ e: "hexo clean" });
                 break;
+            case "generate": 
+                shell({ e: "hexo generate", next: () => { send("渲染完成", "success") } });
+                break;
+            case "deploy":
+                shell({ e: "hexo deploy", next: () => { send("部署完成","success") } });
+                break;
             case "server":
                 hexoServer();
                 break;
             case "close_server":
                 closeServer();
-                break;
-            case "deploy":
-                shell({ e: "hexo deploy", next: () => { send("部署完成","success") } });
                 break;
             case "new_post":
                 new_post(req.query.post);
