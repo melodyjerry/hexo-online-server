@@ -74,7 +74,7 @@
       $("ul.nav li").removeClass("active");
       $('a[href="' + location.pathname + '"]').parent().addClass('active');
     }
-    const ws = new WebSocket('<%- ssl?"wss":"ws" %>://' + window.location.hostname + ':<%= wsPort %>');
+    let ws = new WebSocket('<%- ssl?"wss":"ws" %>://' + window.location.hostname + ':<%= wsPort %>');
     ws.onopen = function (ev) {
       swal("WebSocket已连接");
     };
@@ -97,6 +97,8 @@
     };
     ws.onclose = function (ev) {
       swal("\nWebSocket连接关闭");
+      swal("\n正在重连WebSocket...");
+      ws = new WebSocket('<%- ssl?"wss":"ws" %>://' + window.location.hostname + ':<%= wsPort %>');
     };
     ws.onerror = function (ev) {
       swal("\nWebSocket连接出错", "error");
